@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/timer/timer",
+    "pages/heatmap/heatmap",
+    "pages/stats/stats"
+  ],
+  "window": {
+    "navigationBarTitleText": "专注钟",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom",
+    "backgroundColor": "#f5f7fa",
+    "backgroundTextStyle": "light",
+    "resizable": true
+  },
+  "tabBar": {
+    "color": "#9aa0a6",
+    "selectedColor": "#4f46e5",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/timer/timer",
+        "text": "专注",
+        "iconPath": "assets/icons/timer.png",
+        "selectedIconPath": "assets/icons/timer-active.png"
+      },
+      {
+        "pagePath": "pages/heatmap/heatmap",
+        "text": "热力图",
+        "iconPath": "assets/icons/heatmap.png",
+        "selectedIconPath": "assets/icons/heatmap-active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "assets/icons/stats.png",
+        "selectedIconPath": "assets/icons/stats-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

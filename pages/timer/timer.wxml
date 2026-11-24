@@ -1,0 +1,196 @@
+<view class="container {{theme === 'dark' ? 'theme-dark' : ''}}">
+    <!-- 自定义导航栏 -->
+    <view class="nav-bar">
+        <view style="height: {{statusBarHeight}}px;"></view>
+        <view class="nav-title">专注钟</view>
+    </view>
+
+    <!-- 完成态 -->
+    <view class="card done-card" wx:if="{{phase === 'done'}}">
+        <view class="done-icon">🎉</view>
+        <view class="done-title">{{doneTitle}}</view>
+        <view class="done-time">{{elapsedText}}</view>
+        <view class="done-text">{{doneText}}</view>
+        <view class="done-actions">
+            <button class="btn-ghost done-btn" bindtap="onRestart">再来一次</button>
+            <button class="btn-primary done-btn" bindtap="onGoStats">看看统计</button>
+        </view>
+    </view>
+
+    <!-- 本次专注描述 -->
+    <view class="card note-card" wx:if="{{phase === 'done' && savedRecordId}}">
+        <view class="card-title">本次专注描述</view>
+        <textarea
+            class="note-input"
+            value="{{doneNote}}"
+            maxlength="50"
+            placeholder="简单记录这次专注做了什么（可选，50 字内）"
+            bindinput="onNoteInput"
+            auto-height
+        ></textarea>
+        <view class="note-saved" wx:if="{{noteSaved}}">✓ 描述已记录，可随时修改后重新保存</view>
+        <view class="note-actions">
+            <button class="btn-ghost note-btn" bindtap="onSkipNote">跳过</button>
+            <button class="btn-primary note-btn" bindtap="onSaveNote">保存描述</button>
+        </view>
+    </view>
+
+    <!-- 未完成原因（设定了目标但提前结束才出现） -->
+    <view class="card note-card" wx:if="{{phase === 'done' && showAbortCard}}">
+        <view class="card-title">未完成原因</view>
+        <textarea
+            class="note-input"
+            value="{{abortInput}}"
+            maxlength="50"
+            placeholder="这次为什么没能坚持到目标？记录下来提醒自己（50 字内）"
+            bindinput="onAbortInput"
+            auto-height
+        ></textarea>
+        <view class="note-saved" wx:if="{{abortSaved}}">✓ 原因已记录，可在热力图明细 / 统计页查看</view>
+        <view class="note-actions">
+            <button class="btn-ghost note-btn" bindtap="onSkipAbort">跳过</button>
+            <button class="btn-primary note-btn" bindtap="onSaveAbort">保存原因</button>
+        </view>
+    </view>
+
+    <!-- 计时区 -->
+    <view class="card timer-card" wx:if="{{phase !== 'done'}}">
+        <view class="ring-wrap">
+            <canvas type="2d" id="ring" class="ring-canvas"></canvas>
+            <view class="ring-center">
+                <view class="time-text">{{elapsedText}}</view>
+                <view class="state-text" wx:if="{{phase === 'idle' && isUnlimited}}">不限时专注，随时结束</view>
+                <view class="state-text" wx:elif="{{phase === 'idle'}}">目标 {{selectedMin}} 分钟</view>
+                <view class="state-text" wx:elif="{{phase === 'running' && isUnlimited}}">不限时专注中…</view>
+                <view class="state-text" wx:elif="{{phase === 'running' && !reachedGoal}}">专注中…</view>
+                <view class="state-text state-reached" wx:elif="{{phase === 'running'}}">已达标，继续保持！</view>
+                <view class="state-text" wx:elif="{{phase === 'paused'}}">已暂停</view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 页面内提示（不用弹窗） -->
+    <view class="message {{reachedGoal && phase === 'running' ? 'message-reached' : ''}}" wx:if="{{messageText}}">{{messageText}}</view>
+
+    <!-- 每小时休息提醒横幅 -->
+    <view class="rest-banner" wx:if="{{restHint && (phase === 'running' || phase === 'paused')}}">
+        <view class="rest-text">⏰ 已连续专注 {{restHours}} 小时，休息一下吧！建议放松眼睛、活动身体 5~10 分钟</view>
+        <view class="rest-actions">
+            <button class="btn-ghost rest-btn" bindtap="onRestDismiss">继续专注</button>
+            <button class="btn-primary rest-btn" bindtap="onRestPause">暂停休息</button>
+        </view>
+    </view>
+
+    <!-- 目标时长选择 -->
+    <view class="card" wx:if="{{phase === 'idle'}}">
+        <view class="card-title-row">
+            <view class="card-title">专注标签</view>
+            <view class="tag-edit-btn" bindtap="onToggleTagEdit">{{tagEditing ? '完成' : '编辑标签'}}</view>
+        </view>
+        <view class="chips tag-chips">
+            <view class="chip-wrap" wx:for="{{tags}}" wx:for-item="item" wx:key="*this">
+                <view
+                    class="chip chip-sm {{selectedTag === item ? 'chip-active' : ''}}"
+                    data-tag="{{item}}"
+                    bindtap="onTagTap"
+                >{{item}}</view>
+                <view class="tag-del" wx:if="{{tagEditing}}" data-tag="{{item}}" catchtap="onTagDelete">×</view>
+            </view>
+            <view class="chip chip-sm chip-add" wx:if="{{!tagEditing}}" bindtap="onCustomTagTap">＋ 自定义</view>
+        </view>
+        <view class="tag-input-row" wx:if="{{showTagInput}}">
+            <input
+                class="tag-input"
+                value="{{tagInputValue}}"
+                maxlength="6"
+                placeholder="输入标签，最多 6 个字"
+                confirm-type="done"
+                focus="{{showTagInput}}"
+                bindinput="onTagInput"
+                bindconfirm="onTagConfirm"
+            />
+            <view class="tag-input-btn" bindtap="onTagConfirm">确定</view>
+            <view class="tag-input-cancel" bindtap="onTagCancel">取消</view>
+        </view>
+        <view class="card-title-row section-gap-row">
+            <view class="card-title">目标时长</view>
+            <view class="tag-edit-btn" bindtap="onToggleGoalEdit">{{goalEditing ? '完成' : '编辑预设'}}</view>
+        </view>
+        <view class="chips">
+            <view class="chip-wrap" wx:for="{{presets}}" wx:for-item="item" wx:key="*this">
+                <view
+                    class="chip {{!isCustom && !isUnlimited && selectedMin === item ? 'chip-active' : ''}}"
+                    data-min="{{item}}"
+                    bindtap="onPresetTap"
+                >{{item}} 分钟</view>
+                <view class="tag-del" wx:if="{{goalEditing}}" data-min="{{item}}" catchtap="onPresetDelete">×</view>
+            </view>
+            <view class="chip chip-unlimited {{isUnlimited ? 'chip-active' : ''}}" bindtap="onUnlimitedTap">不限时</view>
+            <view class="chip chip-add {{!isUnlimited && isCustom ? 'chip-active' : ''}}" bindtap="onGoalCustomTap">自定义</view>
+        </view>
+        <view class="tag-input-row" wx:if="{{showGoalInput}}">
+            <input
+                class="tag-input"
+                type="number"
+                value="{{goalInputValue}}"
+                maxlength="3"
+                placeholder="输入分钟数，1 ~ 600"
+                confirm-type="done"
+                focus="{{showGoalInput}}"
+                bindinput="onGoalInput"
+                bindconfirm="onGoalConfirm"
+            />
+            <view class="tag-input-btn" bindtap="onGoalConfirm">确定</view>
+            <view class="tag-input-cancel" bindtap="onGoalCancel">取消</view>
+        </view>
+        <view class="stepper-row" wx:if="{{!isUnlimited}}">
+            <text class="stepper-label">自定义目标</text>
+            <view class="stepper">
+                <view class="step-btn" bindtap="onStepMinus">−</view>
+                <view class="step-value">{{selectedMin}} 分钟</view>
+                <view class="step-btn" bindtap="onStepPlus">＋</view>
+            </view>
+        </view>
+        <view class="stepper-tip" wx:if="{{!isUnlimited}}">每次 ±5 分钟，范围 1 ~ 600 分钟；或点「自定义」直接输入</view>
+        <view class="stepper-tip" wx:if="{{isUnlimited}}">不设目标，从 00:00 一直往上计，随时点「结束」保存</view>
+    </view>
+
+    <!-- 控制按钮 -->
+    <view class="actions" wx:if="{{phase === 'idle'}}">
+        <button class="btn-primary action-btn" bindtap="onStart">开始专注</button>
+    </view>
+    <view class="actions" wx:if="{{phase === 'running'}}">
+        <button class="btn-ghost action-btn" bindtap="onPause">暂停</button>
+        <button class="btn-primary action-btn" bindtap="onFinish">结束</button>
+    </view>
+    <view class="actions" wx:if="{{phase === 'paused'}}">
+        <button class="btn-ghost action-btn" bindtap="onResume">继续</button>
+        <button class="btn-primary action-btn" bindtap="onFinish">结束</button>
+    </view>
+
+    <!-- 全屏专注入口 -->
+    <view class="fs-entry" wx:if="{{phase !== 'done' && !fullscreen}}" bindtap="onFullscreenTap">⛶ 全屏专注</view>
+
+    <view class="tip" wx:if="{{phase === 'idle' && isUnlimited}}">不限时模式：点「开始」直接计时，想专注多久就多久</view>
+    <view class="tip" wx:elif="{{phase === 'idle'}}">正向计时：点「开始」从 00:00 往上计，达到目标圆环会变绿</view>
+    <view class="tip" wx:elif="{{phase === 'running'}}">随时可以结束，已专注时长会自动保存到今日打卡</view>
+
+    <!-- 全屏专注模式：纯黑背景，只显示计时 -->
+    <view class="fs-layer" wx:if="{{fullscreen}}" bindtap="onFsTap">
+        <view class="fs-time" style="font-size: {{fsFontSize}};">{{elapsedText}}</view>
+        <view class="fs-hint" wx:if="{{!fsShowExit && !restHint}}">点按屏幕显示操作</view>
+        <!-- 全屏下的休息提醒：自动弹出，不挡计时数字 -->
+        <view class="fs-rest" wx:if="{{restHint && (phase === 'running' || phase === 'paused')}}" catchtap="noop">
+            <view class="fs-rest-text">⏰ 已连续专注 {{restHours}} 小时，休息一下吧！建议放松眼睛、活动身体 5~10 分钟</view>
+            <view class="fs-rest-actions">
+                <view class="fs-btn" catchtap="onRestDismiss">继续专注</view>
+                <view class="fs-btn fs-btn-end" catchtap="onRestPause">暂停休息</view>
+            </view>
+        </view>
+        <view class="fs-actions" wx:if="{{fsShowExit}}" catchtap="noop">
+            <view class="fs-btn" wx:if="{{phase === 'paused'}}" catchtap="onResume">继续计时</view>
+            <view class="fs-btn" catchtap="onFsExit">退出全屏</view>
+            <view class="fs-btn fs-btn-end" catchtap="onFsFinish">结束并保存</view>
+        </view>
+    </view>
+</view>

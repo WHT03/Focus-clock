@@ -1,0 +1,500 @@
+.container {
+    padding-bottom: 48rpx;
+}
+
+.timer-card {
+    display: flex;
+    justify-content: center;
+    padding: 48rpx 32rpx;
+}
+
+.ring-wrap {
+    position: relative;
+    width: 480rpx;
+    height: 480rpx;
+}
+
+.ring-canvas {
+    width: 480rpx;
+    height: 480rpx;
+}
+
+.ring-center {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 480rpx;
+    height: 480rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-text {
+    font-size: 72rpx;
+    font-weight: 700;
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2rpx;
+}
+
+.state-text {
+    margin-top: 12rpx;
+    font-size: 26rpx;
+    color: var(--text-muted);
+}
+
+.state-reached {
+    color: var(--ok-text);
+    font-weight: 600;
+}
+
+/* 时长选择 */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20rpx;
+}
+
+.chip {
+    padding: 16rpx 36rpx;
+    border-radius: 44rpx;
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    font-size: 28rpx;
+    font-weight: 500;
+}
+
+.chip-active {
+    background: var(--accent);
+    color: var(--accent-on);
+}
+
+.chip-unlimited {
+    background: var(--ok-soft-bg);
+    color: var(--ok-text);
+    font-weight: 600;
+}
+
+.chip-unlimited.chip-active {
+    background: #2f9e44;
+    color: #ffffff;
+}
+
+/* 小号标签 chip */
+.tag-chips {
+    margin-bottom: 8rpx;
+}
+
+/* 「专注标签」标题行：标题 + 编辑按钮两端对齐 */
+.card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20rpx;
+}
+
+.card-title-row .card-title {
+    margin-bottom: 0;
+}
+
+.tag-edit-btn {
+    padding: 8rpx 24rpx;
+    border-radius: 26rpx;
+    background: var(--chip-bg);
+    color: var(--accent, #4f46e5);
+    font-size: 24rpx;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* 编辑模式：每个 chip 包一层相对定位容器，承载右上角 × 删除角标 */
+.chip-wrap {
+    position: relative;
+}
+
+.tag-del {
+    position: absolute;
+    top: -12rpx;
+    right: -12rpx;
+    width: 36rpx;
+    height: 36rpx;
+    border-radius: 50%;
+    background: #e8590c;
+    color: #ffffff;
+    font-size: 26rpx;
+    line-height: 34rpx;
+    text-align: center;
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.25);
+}
+
+.chip-sm {
+    padding: 12rpx 28rpx;
+    font-size: 26rpx;
+}
+
+/* 「＋ 自定义」/「自定义」chip：虚线边框弱化样式 */
+.chip-add {
+    background: transparent;
+    color: var(--accent);
+    border: 2rpx dashed var(--chip-add-border);
+    box-sizing: border-box;
+}
+
+.chip-add.chip-active {
+    background: var(--accent);
+    color: var(--accent-on);
+    border-color: var(--accent);
+}
+
+/* 自定义标签 / 时长输入行 */
+.tag-input-row {
+    margin-top: 20rpx;
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+}
+
+.tag-input {
+    flex: 1;
+    height: 72rpx;
+    padding: 0 24rpx;
+    border-radius: 16rpx;
+    background: var(--input-bg);
+    font-size: 28rpx;
+    color: var(--text-main);
+}
+
+.tag-input-btn {
+    padding: 14rpx 30rpx;
+    border-radius: 16rpx;
+    background: var(--accent);
+    color: var(--accent-on);
+    font-size: 26rpx;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.tag-input-cancel {
+    padding: 14rpx 30rpx;
+    border-radius: 16rpx;
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    font-size: 26rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.section-gap {
+    margin-top: 32rpx;
+}
+
+/* 标题行版本的上间距（目标时长编辑行） */
+.section-gap-row {
+    margin-top: 32rpx;
+}
+
+/* 自定义步进器 */
+.stepper-row {
+    margin-top: 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stepper-label {
+    font-size: 28rpx;
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+.stepper {
+    display: flex;
+    align-items: center;
+}
+
+.step-btn {
+    width: 64rpx;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16rpx;
+    background: var(--chip-bg);
+    color: var(--accent);
+    font-size: 36rpx;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.step-value {
+    min-width: 160rpx;
+    text-align: center;
+    font-size: 28rpx;
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 0 16rpx;
+}
+
+.stepper-tip {
+    margin-top: 16rpx;
+    font-size: 22rpx;
+    color: var(--text-faint);
+}
+
+/* 页面内提示条 */
+.message {
+    margin: 0 24rpx;
+    padding: 16rpx 24rpx;
+    background: var(--warn-bg);
+    color: var(--warn-text);
+    border-radius: 16rpx;
+    font-size: 26rpx;
+    text-align: center;
+}
+
+/* 达标提醒：绿色高亮 + 脉冲动画 */
+.message-reached {
+    background: var(--ok-bg);
+    color: var(--ok-text);
+    font-weight: 600;
+    animation: message-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes message-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+
+/* 按钮 */
+.actions {
+    display: flex;
+    gap: 24rpx;
+    margin: 32rpx 24rpx 0;
+}
+
+.action-btn {
+    flex: 1;
+    height: 96rpx;
+}
+
+.tip {
+    margin: 32rpx 48rpx 0;
+    text-align: center;
+    font-size: 24rpx;
+    color: var(--text-faint);
+}
+
+/* 完成态 */
+.done-card {
+    padding: 64rpx 32rpx;
+    text-align: center;
+}
+
+.done-icon {
+    font-size: 96rpx;
+}
+
+.done-title {
+    margin-top: 24rpx;
+    font-size: 40rpx;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.done-time {
+    margin-top: 8rpx;
+    font-size: 56rpx;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.done-text {
+    margin-top: 16rpx;
+    font-size: 28rpx;
+    color: var(--text-sub);
+}
+
+.done-actions {
+    margin-top: 48rpx;
+    display: flex;
+    gap: 24rpx;
+}
+
+.done-btn {
+    flex: 1;
+    height: 92rpx;
+}
+
+/* ============ 本次专注描述 ============ */
+
+.note-input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 120rpx;
+    padding: 20rpx 24rpx;
+    border-radius: 16rpx;
+    background: var(--input-bg);
+    font-size: 28rpx;
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+.note-saved {
+    margin-top: 16rpx;
+    font-size: 24rpx;
+    color: var(--ok-text);
+}
+
+.note-actions {
+    margin-top: 20rpx;
+    display: flex;
+    gap: 24rpx;
+}
+
+.note-btn {
+    flex: 1;
+    height: 76rpx;
+}
+
+/* ============ 全屏专注模式（CSS 旋转横屏） ============ */
+
+/* 入口按钮 */
+.fs-entry {
+    margin: 24rpx 24rpx 24rpx;
+    padding: 18rpx 0;
+    text-align: center;
+    border-radius: 44rpx;
+    background: var(--chip-bg);
+    color: var(--text-sub);
+    font-size: 26rpx;
+    font-weight: 500;
+}
+
+/* 全屏层：点入口立即以 CSS 旋转 90 度呈现横屏，无需真机旋转。
+   宽取视口高、高取视口宽，绕左上角旋转后平移回视口内，正好铺满整个屏幕 */
+.fs-layer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vh;
+    height: 100vw;
+    transform: rotate(90deg) translateY(-100%);
+    transform-origin: 0 0;
+    background: #000000;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 中央超大计时数字 */
+.fs-time {
+    color: #ffffff;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+/* 淡淡的操作提示（在时间下方，不挡数字） */
+.fs-hint {
+    margin-top: 40px;
+    color: rgba(255, 255, 255, 0.28);
+    font-size: 22rpx;
+}
+
+/* 点按屏幕后呼出的操作按钮：固定在横屏底部，与时间分处两端不重叠 */
+.fs-actions {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 40rpx;
+}
+
+.fs-btn {
+    padding: 16px 40px;
+    border-radius: 40px;
+    border: 2rpx solid rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.fs-btn-end {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+/* 全屏下的休息提醒卡：自动弹出在时间上方，深色适配 */
+.fs-rest {
+    position: absolute;
+    top: 32px;
+    left: 48px;
+    right: 48px;
+    padding: 24rpx;
+    border-radius: 20rpx;
+    background: rgba(47, 158, 68, 0.18);
+    border: 2rpx solid rgba(178, 242, 187, 0.55);
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+.fs-rest-text {
+    color: #8ce99a;
+    font-size: 26rpx;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.fs-rest-actions {
+    margin-top: 20rpx;
+    display: flex;
+    gap: 24rpx;
+}
+
+.fs-rest-actions .fs-btn {
+    flex: 1;
+    text-align: center;
+}
+
+/* ============ 每小时休息提醒横幅 ============ */
+
+.rest-banner {
+    margin: 16rpx 24rpx 0;
+    padding: 24rpx;
+    border-radius: 20rpx;
+    background: var(--ok-bg, #e7f5ec);
+    border: 2rpx solid var(--ok-border, #b2f2bb);
+    box-sizing: border-box;
+}
+
+.rest-text {
+    font-size: 26rpx;
+    color: var(--ok-text, #2f9e44);
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.rest-actions {
+    margin-top: 20rpx;
+    display: flex;
+    gap: 24rpx;
+}
+
+.rest-btn {
+    flex: 1;
+    height: 76rpx;
+}

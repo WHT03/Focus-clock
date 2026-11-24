@@ -1,0 +1,155 @@
+page {
+    min-height: 100%;
+    background: #f5f7fa;
+    color: #1f2329;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+button {
+    border-radius: 12rpx;
+}
+
+/* ============ 主题变量 ============ */
+
+/* 亮色主题（默认） */
+.container {
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --card-shadow: rgba(31, 35, 41, 0.05);
+    --text-main: #1f2329;
+    --text-sub: #4a5060;
+    --text-muted: #8a9099;
+    --text-faint: #a0a5af;
+    --accent: #4f46e5;
+    --accent-on: #ffffff;
+    --accent-soft: #a5b4fc;
+    --chip-bg: #eef0f6;
+    --chip-text: #4a5060;
+    --border: #f0f1f5;
+    --track-bg: #f0f1f5;
+    --ring-base: #e8eaf2;
+    --spin-track: #e8eaf2;
+    --heat-empty: #ebedf0;
+    --input-bg: #f3f4f8;
+    --chip-add-border: #b6b9f0;
+    --error: #e5484d;
+    --warn-bg: #fff4e6;
+    --warn-text: #e8590c;
+    --ok-bg: #ebfbee;
+    --ok-text: #2f9e44;
+    --ok-border: #b2f2bb;
+    --ok-soft-bg: #eef7f0;
+    --btn-ghost-bg: #eef0f6;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text-main);
+}
+
+/* 深色主题 */
+.container.theme-dark {
+    --bg: #17181c;
+    --card-bg: #23252b;
+    --card-shadow: rgba(0, 0, 0, 0.3);
+    --text-main: #f0f1f5;
+    --text-sub: #b8bcc6;
+    --text-muted: #9aa0a6;
+    --text-faint: #6f747d;
+    --accent: #818cf8;
+    --accent-on: #ffffff;
+    --accent-soft: #6366f1;
+    --chip-bg: #2e3138;
+    --chip-text: #b8bcc6;
+    --border: #303339;
+    --track-bg: #2e3138;
+    --ring-base: #2e3138;
+    --spin-track: #2e3138;
+    --heat-empty: #2e3138;
+    --input-bg: #2e3138;
+    --chip-add-border: #4b4f7a;
+    --error: #ff8787;
+    --warn-bg: #3a2e1d;
+    --warn-text: #ffb668;
+    --ok-bg: #1d3327;
+    --ok-text: #69db7c;
+    --ok-border: #2f5e3a;
+    --ok-soft-bg: #1d3327;
+    --btn-ghost-bg: #2e3138;
+}
+
+/* ============ 通用组件 ============ */
+
+/* 自定义导航栏（navigationStyle: custom，随主题变色） */
+.nav-bar {
+    background: var(--bg);
+}
+
+.nav-title {
+    height: 88rpx;
+    line-height: 88rpx;
+    text-align: center;
+    font-size: 34rpx;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* 通用卡片 */
+.card {
+    background: var(--card-bg);
+    border-radius: 24rpx;
+    padding: 32rpx;
+    margin: 24rpx;
+    box-shadow: 0 4rpx 16rpx var(--card-shadow);
+}
+
+.card-title {
+    font-size: 30rpx;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 20rpx;
+}
+
+/* 主按钮：flex 垂直居中，修复文字偏下 */
+.btn-primary {
+    background: var(--accent);
+    color: var(--accent-on);
+    border-radius: 48rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+.btn-primary[disabled] {
+    background: var(--accent-soft);
+    color: var(--accent-on);
+}
+
+/* 次按钮：flex 垂直居中 */
+.btn-ghost {
+    background: var(--btn-ghost-bg);
+    color: var(--accent);
+    border-radius: 48rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+.btn-danger {
+    background: var(--btn-ghost-bg);
+    color: var(--error);
+    border-radius: 48rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}

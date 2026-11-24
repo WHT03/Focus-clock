@@ -1,0 +1,323 @@
+.container {
+    padding-bottom: 48rpx;
+}
+
+/* 指标网格 */
+.metric-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20rpx;
+    margin: 24rpx;
+}
+
+.metric-card {
+    flex: 1 1 320rpx;
+    margin: 0;
+    text-align: center;
+    padding: 36rpx 24rpx;
+}
+
+.metric-value {
+    font-size: 40rpx;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.metric-label {
+    margin-top: 8rpx;
+    font-size: 24rpx;
+    color: var(--text-muted);
+}
+
+/* 柱状图 */
+.chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 16rpx;
+    padding-top: 16rpx;
+}
+
+.bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bar-min {
+    height: 36rpx;
+    font-size: 22rpx;
+    color: var(--text-sub);
+    line-height: 36rpx;
+}
+
+.bar-track {
+    width: 100%;
+    max-width: 64rpx;
+    height: 220rpx;
+    background: var(--track-bg);
+    border-radius: 16rpx;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.bar {
+    width: 100%;
+    background: var(--accent-soft);
+    border-radius: 16rpx 16rpx 0 0;
+}
+
+.bar-today {
+    background: var(--accent);
+}
+
+.bar-label {
+    margin-top: 12rpx;
+    font-size: 24rpx;
+    color: var(--text-muted);
+}
+
+/* 行指标 */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24rpx 0;
+    border-bottom: 1rpx solid var(--border);
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.row-label {
+    font-size: 28rpx;
+    color: var(--text-sub);
+}
+
+.row-value {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* 深色模式开关 */
+.settings-card {
+    margin-top: 32rpx;
+}
+
+.toggle {
+    width: 96rpx;
+    height: 52rpx;
+    border-radius: 26rpx;
+    background: var(--track-bg);
+    position: relative;
+    transition: background 0.25s ease;
+}
+
+.toggle-knob {
+    position: absolute;
+    left: 6rpx;
+    top: 6rpx;
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.2);
+    transition: left 0.25s ease;
+}
+
+.toggle-on {
+    background: var(--accent);
+}
+
+.toggle-on .toggle-knob {
+    left: 50rpx;
+}
+
+.settings-tip {
+    margin-top: 8rpx;
+    font-size: 22rpx;
+    color: var(--text-faint);
+    line-height: 1.6;
+}
+
+/* 最近记录 */
+.record-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20rpx 0;
+    border-bottom: 1rpx solid var(--border);
+}
+
+.record-item:last-child {
+    border-bottom: none;
+}
+
+.record-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8rpx;
+}
+
+.record-date {
+    font-size: 26rpx;
+    color: var(--text-sub);
+    font-variant-numeric: tabular-nums;
+}
+
+.record-note {
+    font-size: 24rpx;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* 未完成原因：橙色弱强调，与普通描述区分 */
+.record-abort {
+    color: #e8590c;
+}
+
+.record-status {
+    font-size: 20rpx;
+    padding: 2rpx 10rpx;
+    border-radius: 8rpx;
+    align-self: flex-start;
+}
+
+.status-done {
+    color: var(--ok-text);
+    background: var(--ok-bg);
+}
+
+.status-abort {
+    color: var(--warn-text);
+    background: var(--warn-bg);
+}
+
+.record-dur {
+    font-size: 28rpx;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* 标签分布 */
+.tag-row {
+    display: flex;
+    align-items: center;
+    padding: 16rpx 0;
+}
+
+.tag-name {
+    width: 110rpx;
+    font-size: 26rpx;
+    color: var(--text-sub);
+}
+
+.tag-track {
+    flex: 1;
+    height: 28rpx;
+    background: var(--track-bg);
+    border-radius: 14rpx;
+    overflow: hidden;
+    margin: 0 16rpx;
+}
+
+.tag-bar {
+    height: 100%;
+    border-radius: 14rpx;
+}
+
+.tag-text {
+    width: 170rpx;
+    text-align: right;
+    font-size: 24rpx;
+    color: var(--text-muted);
+}
+
+/* 分享卡片 */
+.share-card-box {
+    text-align: center;
+}
+
+.share-tip {
+    font-size: 26rpx;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 8rpx 0 28rpx;
+}
+
+.share-btn {
+    width: 70%;
+    height: 88rpx;
+    margin: 0 auto;
+}
+
+/* 离屏分享画布 */
+.share-canvas {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 600px;
+    height: 960px;
+}
+
+/* 状态与空态 */
+.state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 120rpx 0;
+}
+
+.loading-dot {
+    width: 32rpx;
+    height: 32rpx;
+    border-radius: 50%;
+    border: 6rpx solid var(--spin-track);
+    border-top-color: var(--accent);
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.state-text {
+    margin-top: 16rpx;
+    font-size: 26rpx;
+    color: var(--text-muted);
+}
+
+.error-text {
+    color: var(--error);
+}
+
+.retry-btn {
+    margin-top: 24rpx;
+    padding: 0 48rpx;
+    height: 72rpx;
+}
+
+.empty-card {
+    text-align: center;
+    padding: 48rpx 32rpx;
+}
+
+.empty-icon {
+    font-size: 64rpx;
+}
+
+.empty-text {
+    margin-top: 16rpx;
+    font-size: 26rpx;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* 第二行设置项与上方提示的间距 */
+.row-gap {
+    margin-top: 20rpx;
+}

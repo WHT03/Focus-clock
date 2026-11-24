@@ -1,0 +1,131 @@
+<view class="container {{theme === 'dark' ? 'theme-dark' : ''}}">
+    <!-- 自定义导航栏 -->
+    <view class="nav-bar">
+        <view style="height: {{statusBarHeight}}px;"></view>
+        <view class="nav-title">专注统计</view>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="state-box" wx:if="{{state === 'loading'}}">
+        <view class="loading-dot"></view>
+        <text class="state-text">正在加载…</text>
+    </view>
+
+    <!-- 出错 -->
+    <view class="state-box" wx:elif="{{state === 'error'}}">
+        <text class="state-text error-text">{{errorMsg}}</text>
+        <button class="btn-ghost retry-btn" bindtap="onRetry">重试</button>
+    </view>
+
+    <block wx:elif="{{state === 'ready'}}">
+        <!-- 核心指标 -->
+        <view class="metric-grid">
+            <view class="card metric-card">
+                <view class="metric-value">{{streakDays}}</view>
+                <view class="metric-label">连续打卡（天）</view>
+            </view>
+            <view class="card metric-card">
+                <view class="metric-value">{{todayText}}</view>
+                <view class="metric-label">今日专注</view>
+            </view>
+            <view class="card metric-card">
+                <view class="metric-value">{{weekText}}</view>
+                <view class="metric-label">本周专注</view>
+            </view>
+            <view class="card metric-card">
+                <view class="metric-value">{{totalText}}</view>
+                <view class="metric-label">累计专注</view>
+            </view>
+        </view>
+
+        <!-- 近 7 天柱状图 -->
+        <view class="card">
+            <view class="card-title">近 7 天专注分布</view>
+            <view class="chart">
+                <view class="bar-col" wx:for="{{bars}}" wx:for-item="bar" wx:key="label">
+                    <view class="bar-min">{{bar.minText}}</view>
+                    <view class="bar-track">
+                        <view class="bar {{bar.today ? 'bar-today' : ''}}" style="height: {{bar.pct}}%;"></view>
+                    </view>
+                    <view class="bar-label">{{bar.label}}</view>
+                </view>
+            </view>
+        </view>
+
+        <!-- 标签分布 -->
+        <view class="card" wx:if="{{tagStats.length > 0}}">
+            <view class="card-title">专注标签分布</view>
+            <view class="tag-row" wx:for="{{tagStats}}" wx:for-item="tag" wx:key="name">
+                <view class="tag-name">{{tag.name}}</view>
+                <view class="tag-track">
+                    <view class="tag-bar" style="width: {{tag.pct}}%; background: {{tag.color}};"></view>
+                </view>
+                <view class="tag-text">{{tag.text}}</view>
+            </view>
+        </view>
+
+        <!-- 次要指标 -->
+        <view class="card">
+            <view class="row">
+                <text class="row-label">累计专注次数</text>
+                <text class="row-value">{{totalCount}} 次</text>
+            </view>
+            <view class="row">
+                <text class="row-label">平均单次时长</text>
+                <text class="row-value">{{avgText}}</text>
+            </view>
+            <view class="row">
+                <text class="row-label">最佳专注日</text>
+                <text class="row-value">{{bestText}}</text>
+            </view>
+        </view>
+
+        <!-- 最近记录 -->
+        <view class="card" wx:if="{{recentItems.length > 0}}">
+            <view class="card-title">最近记录</view>
+            <view class="record-item" wx:for="{{recentItems}}" wx:for-item="item" wx:key="id">
+                <view class="record-left">
+                    <view class="record-date">{{item.dateText}} · {{item.tagText}} · {{item.timeText}}</view>
+                    <view class="record-note" wx:if="{{item.noteText}}">📝 {{item.noteText}}</view>
+                    <view class="record-note record-abort" wx:if="{{item.abortText}}">⚡ 未完成原因：{{item.abortText}}</view>
+                    <text class="record-status {{item.done ? 'status-done' : 'status-abort'}}">{{item.statusText}}</text>
+                </view>
+                <text class="record-dur">{{item.durText}}</text>
+            </view>
+        </view>
+
+        <!-- 分享打卡卡片 -->
+        <view class="card share-card-box" wx:if="{{!isEmpty}}">
+            <view class="card-title">打卡分享</view>
+            <view class="share-tip">生成一张你的专注成就卡片，可发送给微信好友或保存到相册</view>
+            <button class="btn-primary share-btn" bindtap="onShareCard">生成打卡卡片</button>
+        </view>
+
+        <!-- 外观设置 -->
+        <view class="card settings-card">
+            <view class="row">
+                <text class="row-label">深色模式</text>
+                <view class="toggle {{theme === 'dark' ? 'toggle-on' : ''}}" bindtap="onThemeToggle">
+                    <view class="toggle-knob"></view>
+                </view>
+            </view>
+            <view class="settings-tip">开启后界面整体切换为黑色主题，三个页面与底部导航同步生效</view>
+            <view class="row row-gap">
+                <text class="row-label">每小时休息提醒</text>
+                <view class="toggle {{restReminder ? 'toggle-on' : ''}}" bindtap="onRestReminderToggle">
+                    <view class="toggle-knob"></view>
+                </view>
+            </view>
+            <view class="settings-tip">开启后每连续专注满 1 小时（暂停不计入），专注钟会震动响铃并弹出休息提示，可暂停休息后继续计时</view>
+        </view>
+
+        <!-- 空状态 -->
+        <view class="card empty-card" wx:if="{{isEmpty}}">
+            <view class="empty-icon">📊</view>
+            <view class="empty-text">暂无数据，完成一次专注后这里会展示你的统计</view>
+        </view>
+    </block>
+</view>
+
+<!-- 离屏画布：用于绘制分享卡片 -->
+<canvas type="2d" id="share-canvas" class="share-canvas"></canvas>

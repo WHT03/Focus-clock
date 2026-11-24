@@ -1,0 +1,112 @@
+<view class="container {{theme === 'dark' ? 'theme-dark' : ''}}">
+    <!-- 自定义导航栏 -->
+    <view class="nav-bar">
+        <view style="height: {{statusBarHeight}}px;"></view>
+        <view class="nav-title">打卡热力图</view>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="state-box" wx:if="{{state === 'loading'}}">
+        <view class="loading-dot"></view>
+        <text class="state-text">正在加载…</text>
+    </view>
+
+    <!-- 出错 -->
+    <view class="state-box" wx:elif="{{state === 'error'}}">
+        <text class="state-text error-text">{{errorMsg}}</text>
+        <button class="btn-ghost retry-btn" bindtap="onRetry">重试</button>
+    </view>
+
+    <block wx:if="{{state === 'ready'}}">
+        <!-- 月历热力图 -->
+        <view class="card">
+            <view class="month-nav">
+                <view class="nav-btn {{canPrev ? '' : 'nav-btn-disabled'}}" bindtap="onPrevMonth">‹</view>
+                <view class="month-title">{{viewYear}} 年 {{viewMonth}} 月</view>
+                <view class="nav-btn {{canNext ? '' : 'nav-btn-disabled'}}" bindtap="onNextMonth">›</view>
+            </view>
+
+            <view class="week-header">
+                <view class="week-day" wx:for="{{weekDays}}" wx:key="*this">{{item}}</view>
+            </view>
+
+            <view class="month-grid">
+                <view
+                    class="m-cell m-l{{cell.level}} {{cell.empty ? 'm-empty' : ''}} {{cell.future ? 'm-future' : ''}}"
+                    wx:for="{{cells}}"
+                    wx:for-item="cell"
+                    wx:key="key"
+                    data-date="{{cell.date}}"
+                    data-disabled="{{cell.empty || cell.future}}"
+                    bindtap="onCellTap"
+                >
+                    <view class="m-day">{{cell.day}}</view>
+                    <view class="m-min">{{cell.minText}}</view>
+                </view>
+            </view>
+
+            <!-- 图例 -->
+            <view class="legend">
+                <text class="legend-text">少</text>
+                <view class="cell l0 legend-cell"></view>
+                <view class="cell l1 legend-cell"></view>
+                <view class="cell l2 legend-cell"></view>
+                <view class="cell l3 legend-cell"></view>
+                <view class="cell l4 legend-cell"></view>
+                <text class="legend-text">多</text>
+            </view>
+        </view>
+
+        <!-- 本月概览 -->
+        <view class="card">
+            <view class="card-title">{{viewYear}} 年 {{viewMonth}} 月概览</view>
+            <view class="m-stats">
+                <view class="m-stat">
+                    <view class="m-stat-value">{{monthTotalText}}</view>
+                    <view class="m-stat-label">总时长</view>
+                </view>
+                <view class="m-stat">
+                    <view class="m-stat-value">{{monthDays}}</view>
+                    <view class="m-stat-label">专注天数</view>
+                </view>
+                <view class="m-stat">
+                    <view class="m-stat-value">{{monthCount}}</view>
+                    <view class="m-stat-label">专注次数</view>
+                </view>
+                <view class="m-stat">
+                    <view class="m-stat-value">{{monthBestText}}</view>
+                    <view class="m-stat-label">最佳一天</view>
+                </view>
+            </view>
+        </view>
+
+        <!-- 单日明细 -->
+        <view class="card detail-card" wx:if="{{detail}}">
+            <view class="detail-head">
+                <view>
+                    <view class="card-title">{{detail.cn}} 专注明细</view>
+                    <view class="detail-total">共 {{detail.totalText}}</view>
+                </view>
+                <view class="detail-close" bindtap="onCloseDetail">收起</view>
+            </view>
+            <view class="session-item" wx:for="{{detail.items}}" wx:for-item="item" wx:key="id">
+                <view class="session-left">
+                    <view class="session-time">{{item.tagText}} · {{item.timeText}}</view>
+                    <view class="session-note" wx:if="{{item.noteText}}">📝 {{item.noteText}}</view>
+                    <view class="session-note session-abort" wx:if="{{item.abortText}}">⚡ 未完成原因：{{item.abortText}}</view>
+                </view>
+                <view class="session-right">
+                    <text class="session-dur">{{item.durText}}</text>
+                    <text class="session-status {{item.done ? 'status-done' : 'status-abort'}}">{{item.statusText}}</text>
+                </view>
+            </view>
+            <view class="session-empty" wx:if="{{detail.empty}}">这一天还没有专注记录</view>
+        </view>
+
+        <!-- 空状态提示（仅在确实没有任何记录时显示） -->
+        <view class="card empty-card" wx:if="{{!detail && !hasRecord}}">
+            <view class="empty-icon">🌱</view>
+            <view class="empty-text">还没有专注记录，去「专注」页开始你的第一次专注吧！</view>
+        </view>
+    </block>
+</view>
